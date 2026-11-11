@@ -1,0 +1,55 @@
+version: "3.8"
+
+services:
+  # Primary NSE Pulse Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nse_pulse_app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - NSE_BASE_URL=https://www.nseindia.com
+      - NSE_REQUEST_TIMEOUT=30
+      - NSE_RETRY_COUNT=3
+      - NSE_RETRY_BACKOFF_FACTOR=2.0
+      - NSE_RATE_LIMIT_DELAY=1.5
+      - OUTPUT_DIR=data/processed
+      - RAW_OUTPUT_DIR=data/raw
+      - REPORTS_DIR=data/reports
+      - LOG_DIR=logs
+      - LOG_LEVEL=INFO
+      - DB_ENABLED=true
+      - DATABASE_URL=postgresql://nse_user:nse_password@db:5432/nse_pulse
+      - SCHEDULER_ENABLED=false
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # Optional PostgreSQL Storage
+  db:
+    image: postgres:15-alpine
+    container_name: nse_pulse_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: nse_user
+      POSTGRES_PASSWORD: nse_password
+      POSTGRES_DB: nse_pulse
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nse_user -d nse_pulse"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+
