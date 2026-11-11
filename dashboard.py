@@ -53,6 +53,19 @@ def get_app_settings():
 settings = get_app_settings()
 
 
+# Ensure sample data exists on first load (e.g. fresh cloud deployments)
+def _ensure_initial_data():
+    if not any(settings.reports_dir.glob("run_*.json")):
+        try:
+            from scripts.generate_sample_outputs import main as gen_samples
+            gen_samples()
+        except Exception:
+            pass
+
+
+_ensure_initial_data()
+
+
 # Helper to load latest CSV for a dataset
 def load_dataset_csv(csv_prefix: str, execution_date: Optional[date] = None) -> Optional[pd.DataFrame]:
     if execution_date:
