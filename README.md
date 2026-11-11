@@ -2,8 +2,8 @@
 
 > **Reliable Market Data. Validated Pipelines. Actionable Insights.**
 
-[![CI/CD Status](https://github.com/nse-pulse/nse-pulse/actions/workflows/ci.yml/badge.svg)](https://github.com/nse-pulse/nse-pulse/actions)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Live Streamlit App](https://img.shields.io/badge/Live%20Demo-Streamlit%20Cloud-FF4B4B.svg)](https://nse-pulse-tanya.streamlit.app)
 [![Code Coverage](https://img.shields.io/badge/coverage-78%25-brightgreen.svg)]()
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-009688.svg)](https://fastapi.tiangolo.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -340,6 +340,12 @@ python main.py --serve --port 8000
 Open [http://localhost:8000](http://localhost:8000) for the Interactive Dashboard, or [http://localhost:8000/docs](http://localhost:8000/docs) for Swagger UI.
 
 ### 5. Start Streamlit Analytics Dashboard
+
+#### Option A: View the Live Hosted Cloud Dashboard
+The application is deployed live on Streamlit Community Cloud:
+👉 **[https://nse-pulse-tanya.streamlit.app](https://nse-pulse-tanya.streamlit.app)**
+
+#### Option B: Run Locally on Your Machine
 ```bash
 python main.py --dashboard
 # or directly:
